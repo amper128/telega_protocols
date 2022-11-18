@@ -10,6 +10,9 @@
 
 #include <stdint.h>
 
+/**
+ * @brief Типы сообщений в протоколе VESC с дополнениями
+ */
 typedef enum {
 	VESC_CAN_PACKET_SET_DUTY = 0,
 	VESC_CAN_PACKET_SET_CURRENT = 1,
@@ -38,11 +41,34 @@ typedef enum {
 	VESC_CAN_PACKET_CONF_STORE_CURRENT_LIMITS_IN = 24,
 	VESC_CAN_PACKET_CONF_FOC_ERPMS = 25,
 	VESC_CAN_PACKET_CONF_STORE_FOC_ERPMS = 26,
-	VESC_CAN_PACKET_STATUS_5 = 27
+	VESC_CAN_PACKET_STATUS_5 = 27,
+
+	/* дополнения протокола для управления светом */
+	LIGHT_CAN_PACKET_SYNC = 100,
+	LIGHT_CAN_PACKET_SET_MODE = 101,
+	LIGHT_CAN_PACKET_SET_COLOR = 102,
+	LIGHT_CAN_PACKET_SET_BRIGHTNESS = 103,
+	LIGHT_CAN_PACKET_SET_PERIOD = 104
 } vesc_msg_type_t;
 
+/**
+ * @brief Режимы работы света
+ */
+typedef enum {
+	LEDS_MODE_FADING = 0,
+	LEDS_MODE_STATIC_COLOR = 1,
+	LEDS_MODE_RUNNING_SHAPE = 2,
+	LEDS_MODE_BLINKING = 3,
+	LEDS_MODE_FLASHING = 4,
+	LEDS_MODE_POLICE = 5,
+	LEDS_MODE_MAX
+} leds_mode_t;
+
+/**
+ * @brief Структура заголовка CAN пакета
+ */
 typedef struct {
-	uint8_t id;
-	uint8_t cmd;
-	uint8_t __reserved[2U];
+	uint8_t id;		/**< @brief адрес получателя */
+	uint8_t cmd;		/**< @brief id команды @vesc_msg_type_t */
+	uint8_t __reserved[2U]; /**< @brief не используется */
 } __attribute__((packed)) can_hdr_t;
